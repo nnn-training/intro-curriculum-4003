@@ -10,8 +10,8 @@ const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 
-const GITHUB_CLIENT_ID = 'f756acb8748f85e2014b';
-const GITHUB_CLIENT_SECRET = '0fc57f6660bd5da78873eeacda8c131859b64f30';
+const GITHUB_CLIENT_ID = 'cbf21418657453b45185';
+const GITHUB_CLIENT_SECRET = '03e583a5c4e89e1ed4d571dd4accc754b340f690';
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -50,12 +50,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: '417cce55dcfcfaeb', resave: false, saveUninitialized: false }));
+app.use(session({ secret: '13fcb1025fd23c4b', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', ensureAuthenticated, usersRouter);
 app.use('/photos', photosRouter);
 
 app.get('/auth/github',
@@ -79,6 +79,13 @@ app.get('/logout', (req, res, next) => {
     res.redirect('/');
   });
 });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
