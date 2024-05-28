@@ -11,6 +11,7 @@ const { serveStatic } = require("@hono/node-server/serve-static");
 const { trimTrailingSlash } = require("hono/trailing-slash");
 const { githubAuth } = require("@hono/oauth-providers/github");
 const { getIronSession } = require("iron-session");
+
 const layout = require("./layout");
 
 const indexRouter = require("./routes/index");
@@ -42,6 +43,7 @@ app.use("/auth/github", async (c, next) => {
     client_id: GITHUB_CLIENT_ID,
     client_secret: GITHUB_CLIENT_SECRET,
     scope: ["user:email"],
+    oauthApp: true,
   });
   return await authHandler(c, next).catch(() => c.redirect("/login"));
 });
@@ -85,9 +87,9 @@ app.notFound((c) => {
       html`
         <h1>Not Found</h1>
         <p>${c.req.url} の内容が見つかりませんでした。</p>
-      `,
+      `
     ),
-    404,
+    404
   );
 });
 
@@ -102,9 +104,9 @@ app.onError((error, c) => {
         <h2>${error.name} (${statusCode})</h2>
         <p>${error.message}</p>
         ${NODE_ENV === "development" ? html`<pre>${error.stack}</pre>` : ""}
-      `,
+      `
     ),
-    statusCode,
+    statusCode
   );
 });
 

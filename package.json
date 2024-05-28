@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=\"development\" node --env-file .env --watch src/app.js"
+    "start": "node --env-file .env --watch src/app.js"
   },
   "dependencies": {
     "@hono/node-server": "1.11.0",
-    "@hono/oauth-providers": "0.3.1",
+    "@hono/oauth-providers": "^0.5.0",
     "hono": "4.2.7",
-    "iron-session": "8.0.1"
+    "iron-session": "^8.0.1"
   }
 }

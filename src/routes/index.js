@@ -13,7 +13,7 @@ app.get("/", (c) => {
         <h1>Hello Hono!</h1>
         ${session.user
           ? html`
-              <p>Hello, ${session.user.name}!</p>
+              <p>Hello, ${session.user?.name ?? session.user?.login}!</p>
               <p>
                 <a href="/logout">Logout</a>
               </p>
@@ -23,8 +23,8 @@ app.get("/", (c) => {
                 <a href="/login">Login</a>
               </p>
             `}
-      `,
-    ),
+      `
+    )
   );
 });
 
